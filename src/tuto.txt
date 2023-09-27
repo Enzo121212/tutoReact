@@ -1,0 +1,165 @@
+-----------------------------------
+Redux
+-----------------
+Avec Redux on a un seul state et un seul reducer pour toute notre application. 
+C’est un avantage car cela permet de faciliter l’organisation et l’accessibilité de notre state.
+En revanche, cela pose un problème : plus notre application grandit et plus le reducer va devenir long et complexe. 
+Heureusement, Redux a pensé à tout et propose une solution :combineReducers
+
+
+
+1. Store (magasin) : stoque toutes les etats(donne user..)
+
+2.Action : comme add_panier, decrement, incremente
+
+3.Reducers (Réducteurs) :Fonction qui gere les etats
+
+Dispatch (Déclencher) : L'action est envoyée au store via la fonction dispatch. 
+Lorsque vous envoyez une action, Redux l'achemine aux réducteurs appropriés, qui mettent à jour l'état en fonction de l'action.
+
+
+. Pour commencer à utiliser Redux avec React, vous devez d'abord configurer votre store, 
+créer des actions et des réducteurs, 
+puis connecter vos composants React au store pour accéder à 
+l'état global et envoyer des actions pour modifier cet état.
+
+
+
+---------------------
+state
+----------------
+
+const[nom_variable_stocker,nom_function_update] = useState(initialisation);
+
+Les states globaux( state management) = Redux
+À l’inverse des states locaux, les states globaux sont des states utilisés à de multiples endroits de l'application. 
+Vous connaissez probablement quelques exemples :
+
+Le thème light/dark sélectionné par l’utilisateur.
+La langue d’affichage de l’interface.
+L’utilisateur actuellement connecté.
+
+
+------------------
+PROPS DRILLING
+----------
+On parle de props drilling lorsqu’une ou plusieurs props traverse des composants, 
+c'est-à-dire qu’un composant reçoit une props qu’il passe à un composant enfant sans l'utiliser.
+
+Les state managers permettent de faciliter la manipulation des states globaux, 
+et d’éviter les problèmes de props drilling. En revanche, pour les states locaux, 
+il est conseillé d’utiliser le hook useState  de React, qui peut sans problème cohabiter avec un state manager.
+
+-----------------
+USE SELECTOR (useSelector)
+----------------
+
+useSelector  fait plus que simplement lire les données du state ! En effet, avec useSelector  
+, notre composant va être automatiquement mis à jour lorsque le state change.
+parametre state et retourne state
+
+const gameIsPlaying = useSelector((state) => state.playing);
+
+const advantage = useSelector((state) => state.advantage);
+const hasAdvantage = advantage === playerId;
+              ===
+const hasAdvantage = useSelector((state) => state.advantage === playerId);
+
+
+
+-----------------
+useDispatch
+-------------
+useDispatch  est un hook. Il est donc interdit de l’exécuter dans une condition.
+
+modifier le state de redux
+  const dispatch = useDispatch();
+ 
+  return <button onClick={() => {
+    dispatch({ type: "playPause" })
+  }} >Pause / Reprendre</button>
+
+
+
+---------------
+Store
+-------------
+
+C’est grâce au Provider que useDispatch  et useSelector  auront accès à votre store. 
+Le Provider doit englober toute votre application et attend une prop store  : votre store Redux.
+
+<Provider store={store}>
+    <StrictMode>
+        <App />
+    </StrictMode>
+</Provider>,
+
+---------
+RESUME
+-----------
+Creation store.js
+        1.intialse state(liste de toutes les state)
+        2.Action 
+        3.creation Reducers
+        4.mettre dans createStore(reducer)
+
+
+------------------
+IMMER ( copier les tableaux ou objer)
+------------
+En JavaScript, il y a deux types de valeurs : 
+les primitives (chaîne de caractères, nombre, boolean, null  et undefined  ) 
+et les objets (objets et tableaux).
+
+en Javacript quand tu fait un copie de tableau ou objet
+object1 = object ou tableau1 = tableau2
+alors lorsque tu modifie object1 alors objec modifie automatiquement
+De meme pour tableau1 , tu modifier aussi le tableau 2
+
+Alors il faut utiliser DESTRUCTIRING
+object1 = {...,object} ou tableau1= [...tableau2]
+
+// sans le destructuring
+users.admin.infos.age = 26;
+ 
+// avec le destructuring
+return {
+    ...users,
+    admin: {
+        ...users.admin,
+        infos: {
+            ...users.admin.infos,
+            age: 26
+        }
+    }
+}
+
+Pour simplifier, il faut utiliser IMMER 
+npm add immer
+
+// On importe la fonction produce d'Immer
+import produce from "immer";
+ 
+// Ici on déclare le state initial
+const baseState = { playing: false };
+ 
+// On appelle produce avec le state et une fonction
+// cette fonction reçoit le draft en paramètre
+const nextState = produce(baseState, (draft) => {
+    // on peut modifier le draft directement !
+    draft.playing = !draft.playing;
+});
+// Immer nous retourne un nouveau state
+// Aucun changement n'a été fait sur le state initial !
+
+En immer
+import produce from "immer";
+return produce(state, (draft) => {
+  draft.playing = !draft.playing;
+});
+
+En destructuring
+return { ...state ,playing : !state.playing}
+
+
+
