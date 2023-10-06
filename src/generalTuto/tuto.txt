@@ -1,0 +1,258 @@
+
+
+1.Dans le jsx, toutes les syntaxes sont des javascript mais le babel le transforme en  ancienne js
+ex: <div classname="style"> OH</div> en babel React.createElement(div,{class=style,Oh})
+
+2.En ReactJS, le style, class s'appelle classname 
+exmple <div classname="style"></div>
+
+3.source image
+    -image dans le public (public/img.png)
+        <img src="img.png" alt="image"/>
+    
+    -image dans src/asset/image/img.png
+        import image= '../assets/image/img.png'
+        <img src={image} alt="image"/>
+
+4.Les components sont commencer par majuscule et en pascalCage
+exmple ProductsDetails
+
+10.composanst enfant
+    ex: function app(){
+        return <Produc/>
+    }
+
+11.Un component ne retourne qu'un seule element parent et les encapsule, 
+et l'extension sera toujour en jsx
+
+12.Boostrap
+npm install Boostrap
+    -dans index.html
+        mettre <lin rel="Stylesheet" href="./node_module/boostrap/dist/css/boostrap.css"
+    ou
+    -index.js (recommande)
+    import 'boostrap/dist/css/boostrap.css
+    import 'boostrap/dist/css/boostrap.js
+
+14.Les expression passe en fonction ou variable
+exemple: {mon variable} ou {mon_fonction()}
+
+17.Style
+    -par variable
+    const spanStyle={
+        margin:50;
+        'margin-left' : '50px'; //mettre cote si vous utiliser tiret
+        marginLeft :50; /:Mettre en cameleCase
+    }
+    <span style={spanStyle}></span>
+    
+    -par inline
+    <span style={{ 'color':'red, fontSize:24 }} //utiliser double accolade
+
+18.class dynamique
+
+let bgClass = (MAth.floor(Math.random()*2)===0) 'bg-danger':'bg-warning'
+
+<span classname="bgClass" >dgsgqeg</span>
+
+21.props_passage variable ,childrene
+
+-parent
+    <product name="rakoto" price="140"> produit1</product>
+    <product name="Dina" price="51">produit1</product>
+    <product name="Bema" price="8789"> produit2</product>
+
+-enfant 
+    function product(props){
+        <diV> {props.name}</diV>
+        <diV> {props.price}</diV>
+        <diV> {props.children}</diV> //produit1, produit2 , p
+    }
+    ou destructuring
+
+        function product({name , price,children}){ // en objer
+        <diV> {name}</diV>
+        <diV> {price}</diV>
+        <diV> {props.children}</diV> //produit1, produit2 , p
+    }
+
+24.Event_handling
+
+function btnClick(){
+    //Votre code
+}
+
+<div onClick={btnClick}></div> 
+ou
+<div onClick={()=>btnClick()}></div> 
+
+erreur <div onClick={btnClick()}></div> //ceci ne marche pas avec seulr un parenthese
+
+
+26.hooks useState
+const [nom_variable , updatevariable] =useState(initialSatet)
+
+------------28.Bug Key-------------------
+mettre toujours un KEY lorsque on foreach tab
+{
+    product.map((item,index)={
+        return <div key={index}> item.produit </div>
+    })
+}
+
+--------------------Si vous n'utiliser pas hooksState----------
+//initialisation
+this.state= {
+    maVariable:''
+}
+
+//mise a jour
+this.setState({maVariable="nouvelle Variable"})
+
+//Recuperation
+this.state.maVariable
+
+29.Boostrap formulaire 
+dans latoutit.com
+
+------------Formulaire------------------
+31.formulaire
+donc specialise le boutton par exemple <button type="button">Valider</button>
+
+const [name, setName] = useState('')
+const [check, setCheck] = useState(true)
+ou 
+const[data ,setData] = useState({
+    name:'rakoto',
+    check:true
+})
+
+const getForminput=(e)=>{
+    setName(e.target.value) // pour le simple variable
+    setData({...data,name:e.target.value}) //creer un nouveau objet 
+    setData((previousData)=>{
+        return {...previousData,name:e.target.value}
+    })
+}
+
+const getFormCheckbox=(e)=>{
+    setCheck(e.target.checked)
+    OU
+    setData({...data,check:e.target.checked})    setData({...data,name:e.target.value}) //creer un nouveau objet 
+    OU
+    setData((previousData)=>{
+        return {...previousData,check:e.target.checked}
+    })
+    si c'est un tableau alors
+        setData((previousData)=>{
+        return [...previousData,check:e.target.checked]
+    })
+
+}
+<form onSubmit={handeSubmit}>
+    <label htmlFor="name">name</label>
+    <input type="text" id="name" name="name" onChange={getForminput} value={data.name}/>
+
+    <input type="checkbox" id="name" name="check" onChange={getForminput} checked={data.check}/>
+
+    <button>Valider</button>
+</form>
+
+const handeSubmit = (e)=>{
+    e.preventDefault(); //Empecher le changement url et le rafraichisement
+}
+
+
+-----------------33.Spread operator-----------------
+a= {name:'rakoto',age:24}
+
+//ajout attribut
+c= {...a,adresse: 'andraisoro'} //name:'rakoto',age:24,adresse=andraisoro
+
+//update
+d= {...c,age:63}//name:'rakoto',age=63,adresse=andraisoro
+
+
+-----------39 child to parent------------
+
+parent 
+    getdatachild = (dataChild)=>{
+    console.log(dataChild)
+    }
+    <product getdatachild= {getdatachild}></product>
+
+child
+    function (props){
+        const dataChild = ()=>{
+            data= {name:'raso',age:25}
+            props.getdatachild(data)
+        }
+
+        <div onClick={dataChild}></div>
+    }
+    
+------------40MUABLE et IMMUABLe-----------
+Tableau est muable, ils ont la meme reference
+
+si tu as t1 = t2 = [1,2,3];
+si tu change t1[1]=9 ; // [1,9,3]
+alors t2 aussi a la meme resultat avec [1,9,3] pourtant on le change pas
+
+Alors si tu veux qu'il n'ont pas la meme reference il faut que tu cree le t2 
+a l'aide de spread operator
+t1 = [1,2,3];
+t2= [...t1];
+alors si tu change t1 , le t2 ne change plus parce qu  ils n'ont plus la meme refrence
+
+
+-----------------42filtered-------------
+
+const [product,setProduct] = useState([]);
+const [productFiltered,  setproductFiltered] = useState(product)
+
+const filtreProduct = (e) =>{
+    switch(e.target.value){
+        case 'danger':
+            setproductFiltered(product.filter(item => item.type === 'danger));
+            break;
+
+        case 'warning':
+            setproductFiltered(product.filter(item => item.type === 'warning));
+            break;
+    }
+}
+
+----TEster si Vide 
+
+{
+    (setproductFiltered.length === 0) ? 'vide' :'
+}
+
+---Affichage form
+
+const [showForm , setShowForm] =useState(false);
+<button onClick={()=>setShowForm(true)}> Afficher show</button>
+{
+    (showForm) ? <form/> :''
+}
+
+---disable button
+<button disabled={item.disable} >Valider</button>
+
+
+----------------48 PORTAL----------------------------------
+Cas d'utilisation: boite de dialogue
+
+
+-index.html:
+    <div id= 'root-id'></div>
+
+-component
+    fucntion porta(){
+        return ReactDom.createPortal(
+            <div>jgklmjqklgdsq</div>,
+            document.getElementById('root-portal')
+        )
+    }
+
+

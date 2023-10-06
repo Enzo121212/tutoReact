@@ -1,5 +1,6 @@
 import { createStore } from "redux";
  
+//State initialse
  const initialeState= {
     player1:0,
     player2:0,
@@ -7,6 +8,8 @@ import { createStore } from "redux";
     winner:'egalite',
 }
 
+
+//Les actions
 export const restartGame = ()=>({ type:'restartGame' })
 
 export const playStop = ()=>({ type:'playStop'})
@@ -18,6 +21,7 @@ export const pointScored =(player)=>({
 
 export const winner =()=>({ type:'winner' })
 
+//reducers
 function reducer(state=initialeState ,action ){
     switch (action.type) {
         case 'restartGame':
@@ -57,5 +61,6 @@ function reducer(state=initialeState ,action ){
     }
 }
 
+//Creation store
 export const store = createStore(reducer)
 
